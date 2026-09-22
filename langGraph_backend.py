@@ -36,25 +36,3 @@ graph.add_edge(START, 'chat_node')
 graph.add_edge('chat_node', END)
 
 chatbot = graph.compile(checkpointer=checkpointer)
-
-# 5. Thread Configuration
-thread_id = '1'
-config = {'configurable': {'thread_id': thread_id}}
-
-# 6. Interactive Chat Loop
-while True:
-    user_message = input("Type here: ")
-
-    if user_message.strip().lower() in ['exit', 'quit', 'bye', 'end']:
-        print("Goodbye!")
-        break
-
-
-    # FIX: Key ka naam 'messages' pass karein ('message' nahi)
-    response = chatbot.invoke(
-        {'messages': [HumanMessage(content=user_message)]}, 
-        config=config
-    )
-
-    print('AI:', response['messages'][-1].content)
-    print("-" * 40)
