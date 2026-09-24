@@ -193,7 +193,7 @@ with st.sidebar:
   st.markdown("---")
   st.markdown(
       "<div class='sidebar-footer'>"
-      "Powered by <b>LangGraph & Streamlit</b><br>"
+      "Powered by <b>LangGraph</b><br>"
       "Made by <b>Salman Khan</b> ❤️"
       "</div>",
       unsafe_allow_html=True,
