@@ -110,7 +110,7 @@ st.markdown(
         margin-bottom: 0.5rem;
     }
     .welcome-container p {
-        font-size: 0.9rem;
+        font-size: 1rem;
         color: var(--subtext-light);
         margin: 0;
     }
@@ -207,7 +207,7 @@ st.markdown(
     """
 <div class="main-header">
     <h1>LangGraph AI Assistant</h1>
-    <p>Real-time streaming conversation powered by LangGraph runtime</p>
+    <p>An interactive, multi-thread AI chatbot built with LangGraph, Streamlit, and local LLMs via Ollama.</p>
 </div>
 """,
     unsafe_allow_html=True,
