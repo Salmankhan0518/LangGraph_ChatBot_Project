@@ -104,6 +104,7 @@ st.markdown("""
 # SIDEBAR SETUP
 with st.sidebar:
     st.title("🤖 Chat Control")
+
     st.markdown("---")
     
     st.caption("Active Session Thread:")
