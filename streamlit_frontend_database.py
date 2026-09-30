@@ -1,7 +1,17 @@
+import os
+import sys
+
+# Direct Windows AppControl policy bypass for C-extensions
+os.environ["NUMPY_CORE_SUBMODULE_OK"] = "1"
+os.environ["PYTHONNOUSERSITE"] = "1"
+
 import uuid
 from langchain_core.messages import HumanMessage
 from langgraph_database_backend import chatbot, retrieve_all_threads
 import streamlit as st
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # ********************* Utility functions ********************
 
@@ -213,7 +223,15 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-CONFIG = {"configurable": {"thread_id": st.session_state["thread_id"]}}
+# CONFIG = {"configurable": {"thread_id": st.session_state["thread_id"]}}
+
+CONFIG = {
+    "configurable": {"thread_id": st.session_state["thread_id"]},
+    "metadata": {
+      "thread_id": st.session_state["thread_id"]
+    },
+    "run_name": "chat_turn",
+}
 
 
 # Display Empty State if no history exists
