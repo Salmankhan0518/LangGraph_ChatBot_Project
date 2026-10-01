@@ -6,8 +6,8 @@ os.environ["NUMPY_CORE_SUBMODULE_OK"] = "1"
 os.environ["PYTHONNOUSERSITE"] = "1"
 
 import uuid
-from langchain_core.messages import HumanMessage
-from langgraph_database_backend import chatbot, retrieve_all_threads
+from langchain_core.messages import HumanMessage, AIMessage
+from langgraph_tool_backend import chatbot, retrieve_all_threads
 import streamlit as st
 from dotenv import load_dotenv
 
@@ -263,14 +263,19 @@ if user_input:
 
   # Stream assistant response
   with st.chat_message("assistant"):
-    ai_message = st.write_stream(
-        message_chunk.content
+    def ai_only_stream():
         for message_chunk, metadata in chatbot.stream(
             {"messages": [HumanMessage(content=user_input)]},
             config=CONFIG,
-            stream_mode="messages",
-        )
-    )
+            stream_mode="messages"
+        ):
+           if isinstance(message_chunk, AIMessage):
+                # yield only assistant tokens
+                yield message_chunk.content
+
+    ai_message = st.write_stream(ai_only_stream())
+
+
 
   st.session_state["message_history"].append(
       {"role": "assistant", "content": ai_message}
