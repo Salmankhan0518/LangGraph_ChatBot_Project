@@ -67,14 +67,11 @@ def get_stock_price(symbol: str) -> dict:
 
 tools = [search_tool, get_stock_price, calculator]
 
-# FIX 1: Tools ko LLM ke sath bind karein
 llm_with_tools = llm.bind_tools(tools)
 
-
-# 3. Node Function Fix
+# Node Function
 def chat_node(state: ChatState):
     messages = state['messages']
-    # FIX 2: 'llm' ki bajaye 'llm_with_tools' invoke karein
     response = llm_with_tools.invoke(messages)
     return {'messages': [response]}
 
@@ -84,20 +81,19 @@ tool_node = ToolNode(tools)
 conn = sqlite3.connect(database='chatbot.db', check_same_thread=False)
 checkpointer = SqliteSaver(conn=conn)
 
-# 4. Graph Construction (FIX 3: Tools & Routing Edges Added)
+# Graph Construction
 graph = StateGraph(ChatState)
 
-# Nodes Add Karein
+# Nodes Add
 graph.add_node('chat_node', chat_node)
 graph.add_node('tools', tool_node)
 
 # Flow Definition
 graph.add_edge(START, 'chat_node')
 
-# Check karein ke LLM ne Tool call kiya hai ya Direct Answer diya hai
+
 graph.add_conditional_edges('chat_node', tools_condition)
 
-# Tool execute hone ke baad wapis LLM ke paas jaye response format karne
 graph.add_edge('tools', 'chat_node')
 
 chatbot = graph.compile(checkpointer=checkpointer)
